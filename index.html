@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Page Title</title>
+</head>
+<body>
+  <script>
+    // Your JavaScript goes here!
+    // Global Variables
+    let userScore = 0;
+    let computerScore = 0;
+    let user;
+    let computer; 
+    playGame();
+    // At the end of the game, displays who won
+        if (userScore > computerScore) {
+          console.log("You won the game!");
+        }
+        else if (userScore < computerScore) {
+          console.log("You lost the game!");
+        }
+        else {
+          console.log("It's a tie");
+        }
+
+
+
+  // Starts the game which is 5 rounds
+    function playGame() {
+      for (let i = 0; i < 5; i++) {
+        getHumanChoice();
+        getComputerChoice();
+        console.log(user);
+        console.log(computer);
+        playRound(user, computer);
+        console.log("User = ", userScore, " Computer = ", computerScore);
+      }
+    }
+
+
+
+
+
+  
+
+    function getHumanChoice(){
+      // 1. DISPLAY ‘Select 1 for Rock, 2 for Paper, 3 for Scissors’ & store it as user & loop if number is not selected
+      /* 2. IF User input = 1 THEN
+            PRINT ROCK
+          ELSE IF User input = 2 THEN
+            PRINT PAPER
+          ELSE IF User input = 3 THEN
+            PRINT SCISSORS
+          ELSE
+            DISPLAY ‘Select 1 for Rock, 2 for Paper, 3 for Scissors’
+          ENDIF 
+    */
+      while(user != NaN) {
+        user = prompt("Select 1 for Rock, 2 for Paper, 3 for Scissors");
+        if (user == 1) {
+          user = 'Rock';
+          break
+        }
+        else if (user == 2) {
+          user = 'Paper';
+          break
+        }
+        else if (user == 3) {
+          user = 'Scissors'
+          break
+        }
+        else {
+          console.log('Invalid')
+        }
+    }
+    }
+
+    function getComputerChoice() {
+      // 1. CALL Math.Random and STORE it in computer
+        computer = Math.random();
+    /*
+       2. IF computer >= 0 OR <=1/3 THEN
+          PRINT ROCK
+        ELSE IF computer >1/3 OR <= 2/3 THEN
+          PRINT PAPER
+        ELSE
+         PRINT Scissors
+        ENDIF 
+    */
+        if (computer >= 0 && computer <= 0.3333333333333333) {
+          computer = 'Rock';
+        }
+        else if (computer > 0.3333333333333333 && computer >= 0.6666666666666667) {
+          computer = 'Paper';
+        }
+        else {
+          computer = 'Scissors';
+        }
+    }
+
+    function playRound(userChoice, computerChoice) {
+      /* 
+        OBTAIN userChoice
+          CALL getHumanChoice
+        OBTAIN computerChoice
+          CALL getComputerChoice
+      */
+        //IF userChoice is Rock & computerChoice is Paper THEN
+        //  DISPLAY ‘You lose, Paper beats Rock’
+        //  INCREMENT 1 to computerScore		
+        if (userChoice == 'Rock' && computerChoice == 'Paper') {
+          console.log("You lose, Paper beats Rock");
+          computerScore = computerScore + 1;
+        }
+        //ELSE IF userChoice is Paper & computerChoice is Scissors THEN
+        //  DISPLAY ‘You lose, Scissors beats Paper’
+        //  INCREMENT 1 to computerScore
+        else if (userChoice == 'Paper' && computerChoice == 'Scissors') {
+          console.log("You lose, Scissors beats Paper");
+          computerScore = computerScore + 1;
+        }
+        //ELSE IF userChoice is Scissors & computerChoice is Rock THEN
+        //  DISPLAY ‘You lose, Rock beats Scissors’
+        //  INCREMENT 1 to computerScore
+        else if (userChoice == 'Scissors' && computerChoice == 'Rock') {
+          console.log("You lose, Rock beats Scissors");
+          computerScore = computerScore + 1;
+        }
+        //ELSE IF userChoice is Rock & computerChoice is Scissors THEN
+        //  DISPLAY ‘You win, Rock beats Scissors’
+        //  INCREMENT 1 to userScore
+        else if (userChoice == 'Rock' && computerChoice == 'Scissors') {
+          console.log("You win, Rock beats Scissors");
+          userScore = userScore + 1;
+        }
+        //ELSE IF userChoice is Paper & computerChoice is Rock THEN
+        //  DISPLAY ‘You win, Paper beats Rock’
+        //  INCREMENT 1 to userScore
+        else if (userChoice == 'Paper' && computerChoice == 'Rock') {
+          console.log("You win, Paper beats Rock");
+          userScore = userScore + 1;
+        }
+        //ELSE IF userChoice is Scissors & computerChoice is Paper THEN
+        //  DISPLAY ‘You win, Scissors beats Paper’
+        //  INCREMENT 1 to userScore
+        else if (userChoice == 'Scissors' && computerChoice == 'Paper') {
+          console.log("You win, Scissors beats Paper");
+          userScore = userScore + 1;
+        }
+        //ELSE
+        //  DISPLAY 'Draw'
+        else {
+          console.log('Draw');
+        }
+        //END IF
+      
+    }
+    
+    
+
+  </script>
+</body>
+</html>
