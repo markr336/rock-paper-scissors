@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Rock, Paper, Scissors</title>
+  <div id="buttons"></div>
+  <div><p>Player: <span id="playerScore"></span></p></div>
+  <div><p>Computer: <span id="computerScore"></span></p></div>
+  <div id="result"></div>
+
 </head>
 <body>
   <script>
@@ -12,140 +17,130 @@
     let user;
     let computer; 
 
-    // CALL playGame to play
-    playGame();
-    // After the game it displays who's the wintter
-    if (userScore > computerScore) {
-      console.log("You won the game!");
-    }
-    else if (userScore < computerScore) {
-      console.log("You lost the game!");
-    }
-    else {
-      console.log("It's a tie");
-    }
+    // 1. Selecting buttons
+    const buttons = document.querySelector("#buttons")
 
-    // Starts the game which is 5 rounds
-    function playGame() {
-      for (let i = 0; i < 5; i++) {
-        getHumanChoice();
-        getComputerChoice();
-        console.log(user);
-        console.log(computer);
-        playRound(user, computer);
-        console.log("User = ", userScore, " Computer = ", computerScore);
-      }
-    }
+    // 2. Rock, Paper & Scissors Buttons
+    const rock = document.createElement("button");
+    rock.textContent = "Rock";
+    rock.setAttribute('id', "rock");
+    buttons.appendChild(rock);
+    const paper = document.createElement("button");
+    paper.textContent = "Paper";
+    paper.setAttribute('id', "paper");
+    buttons.appendChild(paper);
+    const scissors = document.createElement("button");
+    scissors.textContent = "Scissors";
+    scissors.setAttribute('id', "scissors");
+    buttons.appendChild(scissors);
 
-    function getHumanChoice(){
-      // GET user selction where 1 = Rock, 2 = Paper, 3 = Scissors
-      // WHILE user not equal to a number
-      while(user != NaN) {
-        user = prompt("Select 1 for Rock, 2 for Paper, 3 for Scissors");
-        // IF User input = 1 THEN
-        //  SET user to Rock  
-        //  END WHILE
-        if (user == 1) {
-          user = 'Rock';
-          break
-        }
-        // IF User input = 2 THEN
-        //  SET user to Paper  
-        //  END WHILE
-        else if (user == 2) {
-          user = 'Paper';
-          break
-        }
-        // IF User input = 3 THEN
-        //  SET user to Scissors  
-        //  END WHILE
-        else if (user == 3) {
+
+    // 3. Event delegation
+    let playerSelection = document.querySelector('#buttons');
+    playerSelection.addEventListener('click', (event) => {
+      let target = event.target;
+      switch(target.id) {
+        case 'rock':
+          user = 'Rock'
+          playGame();
+          break;
+        case 'paper':
+          user = 'Paper'
+          playGame();
+          break;
+        case 'scissors':
           user = 'Scissors'
-          break
-        }
-        // IF No selection
-        //  PRINT Invalid  
-        else {
-          console.log('Invalid')
-        }
+          playGame();
+          break;
       }
+    });
+
+    // 4. playGame function gets invoked after player selects a button.
+    //    It's the computer's choice & then displays who won & score
+    function playGame() {
+        getComputerChoice();
+        playRound(user, computer);
+        document.getElementById("playerScore").innerHTML = userScore;
+        document.getElementById("computerScore").innerHTML = computerScore;
+        // To stop the game, the buttons are removed & replaced with 
+        // a restart button.
+        if (userScore == 5) {
+          document.getElementById("result").innerHTML = 'You won the game';
+          const element = document.getElementById("buttons");
+          while (element.firstChild) {
+            element.removeChild(element.firstChild);
+          }
+          const restartButton = document.createElement("button");
+          restartButton.textContent = "Restart";
+          restartButton.setAttribute('id', 'restart');
+          buttons.appendChild(restartButton);
+          const r = document.querySelector('#restart');
+          r.addEventListener("click", () => {
+            window.location.reload();
+          });
+        }
+        else if (computerScore == 5) {
+          document.getElementById("result").innerHTML = 'Computer won the game';
+          const element = document.getElementById("buttons");
+          while (element.firstChild) {
+            element.removeChild(element.firstChild);
+          }
+          const restartButton = document.createElement("button");
+          restartButton.textContent = "Restart";
+          restartButton.setAttribute('id', 'restart');
+          buttons.appendChild(restartButton);
+          const r = document.querySelector('#restart');
+          r.addEventListener("click", () => {
+            window.location.reload();
+          });
+
+
+        }
     }
 
     function getComputerChoice() {
-      // CALL Math.Random and STORE it in computer
       computer = Math.random();
-      // IF computer >= 0 OR <=1/3 THEN
-      //  SET computer to Rock
       if (computer >= 0 && computer <= 0.3333333333333333) {
         computer = 'Rock';
       }
-      // ELSE IF computer >1/3 OR <= 2/3 THEN
-      //  SET computer to Paper
       else if (computer > 0.3333333333333333 && computer >= 0.6666666666666667) {
         computer = 'Paper';
       }
-      // ELSE
-      //  SET computer to Scissors
       else {
         computer = 'Scissors';
       }
-      // ENDIF 
     }
 
     function playRound(userChoice, computerChoice) {
-      // IF userChoice is Rock & computerChoice is Paper THEN
-      //  DISPLAY ‘You lose, Paper beats Rock’
-      //  INCREMENT 1 to computerScore		
       if (userChoice == 'Rock' && computerChoice == 'Paper') {
-        console.log("You lose, Paper beats Rock");
+        document.getElementById("result").innerHTML = "You lose, Paper beats Rock";
         computerScore = computerScore + 1;
       }
-      // ELSE IF userChoice is Paper & computerChoice is Scissors THEN
-      //  DISPLAY ‘You lose, Scissors beats Paper’
-      //  INCREMENT 1 to computerScore
       else if (userChoice == 'Paper' && computerChoice == 'Scissors') {
-        console.log("You lose, Scissors beats Paper");
+        document.getElementById("result").innerHTML = "You lose, Scissors beats Paper";
         computerScore = computerScore + 1;
       }
-      //ELSE IF userChoice is Scissors & computerChoice is Rock THEN
-      //  DISPLAY ‘You lose, Rock beats Scissors’
-      //  INCREMENT 1 to computerScore
       else if (userChoice == 'Scissors' && computerChoice == 'Rock') {
-        console.log("You lose, Rock beats Scissors");
+        document.getElementById("result").innerHTML = "You lose, Rock beats Scissors";
         computerScore = computerScore + 1;
       }
-      //ELSE IF userChoice is Rock & computerChoice is Scissors THEN
-      //  DISPLAY ‘You win, Rock beats Scissors’
-      //  INCREMENT 1 to userScore
       else if (userChoice == 'Rock' && computerChoice == 'Scissors') {
-        console.log("You win, Rock beats Scissors");
+        document.getElementById("result").innerHTML = "You win, Rock beats Scissors";
         userScore = userScore + 1;
       }
-      //ELSE IF userChoice is Paper & computerChoice is Rock THEN
-      //  DISPLAY ‘You win, Paper beats Rock’
-      //  INCREMENT 1 to userScore
       else if (userChoice == 'Paper' && computerChoice == 'Rock') {
-        console.log("You win, Paper beats Rock");
+        document.getElementById("result").innerHTML = "You win, Paper beats Rock";
         userScore = userScore + 1;
       }
-      //ELSE IF userChoice is Scissors & computerChoice is Paper THEN
-      //  DISPLAY ‘You win, Scissors beats Paper’
-      //  INCREMENT 1 to userScore
       else if (userChoice == 'Scissors' && computerChoice == 'Paper') {
-        console.log("You win, Scissors beats Paper");
+        document.getElementById("result").innerHTML = "You win, Scissors beats Paper";
         userScore = userScore + 1;
       }
-      //ELSE
-      //  DISPLAY 'Draw'
       else {
-        console.log('Draw');
+        document.getElementById("result").innerHTML = "Draw";
       }
-      //END IF
-      
     }
     
-    
-
   </script>
 </body>
 </html>
